@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="0d4ab51" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
-  <bpmn:process id="Process_1mnd8v6" name="Training assign" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="84d9121" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+  <bpmn:process id="assign-training" name="Training assign" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Training Assign">
       <bpmn:outgoing>Flow_15r2a32</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_15r2a32" sourceRef="StartEvent_1" targetRef="Gateway_03igdtl" />
     <bpmn:serviceTask id="Activity_04qjkax" name="Check available trennings">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="check-avaiablity" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_15uopc1</bpmn:incoming>
       <bpmn:outgoing>Flow_09z8w3n</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_09z8w3n" sourceRef="Activity_04qjkax" targetRef="Activity_039bh3t" />
     <bpmn:sequenceFlow id="Flow_041bpv2" sourceRef="Activity_039bh3t" targetRef="Activity_1mjdx6v" />
     <bpmn:userTask id="Activity_1mjdx6v" name="Choose trening">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:formDefinition formId="Trening_Form" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_041bpv2</bpmn:incoming>
       <bpmn:outgoing>Flow_1ae9jvf</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1ae9jvf" sourceRef="Activity_1mjdx6v" targetRef="Activity_0uyq1hf" />
     <bpmn:serviceTask id="Activity_0uyq1hf" name="Register user for trening">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="registration-for-training" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1ae9jvf</bpmn:incoming>
       <bpmn:outgoing>Flow_1w237p3</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -46,9 +56,12 @@
     </bpmn:task>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1mnd8v6">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="assign-training">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="152" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="134" y="143" width="74" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1lj3exx_di" bpmnElement="Activity_04qjkax">
         <dc:Bounds x="290" y="78" width="100" height="80" />
@@ -88,10 +101,6 @@
         <di:waypoint x="188" y="118" />
         <di:waypoint x="215" y="118" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15uopc1_di" bpmnElement="Flow_15uopc1">
-        <di:waypoint x="265" y="118" />
-        <di:waypoint x="290" y="118" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_09z8w3n_di" bpmnElement="Flow_09z8w3n">
         <di:waypoint x="390" y="118" />
         <di:waypoint x="450" y="118" />
@@ -108,14 +117,18 @@
         <di:waypoint x="870" y="118" />
         <di:waypoint x="982" y="118" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gmrs08_di" bpmnElement="Flow_0gmrs08">
+        <di:waypoint x="820" y="176" />
+        <di:waypoint x="820" y="250" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1a8jd2s_di" bpmnElement="Flow_1a8jd2s">
         <di:waypoint x="770" y="290" />
         <di:waypoint x="240" y="290" />
         <di:waypoint x="240" y="143" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0gmrs08_di" bpmnElement="Flow_0gmrs08">
-        <di:waypoint x="820" y="176" />
-        <di:waypoint x="820" y="250" />
+      <bpmndi:BPMNEdge id="Flow_15uopc1_di" bpmnElement="Flow_15uopc1">
+        <di:waypoint x="265" y="118" />
+        <di:waypoint x="290" y="118" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

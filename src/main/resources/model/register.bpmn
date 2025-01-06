@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="0d4ab51" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="84d9121" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
   <bpmn:process id="Process_06pmoe0" name="Register" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1" name="Entered registration form">
       <bpmn:outgoing>Flow_146q6u2</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_1a67kcm" name="Input registration credentials">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:formDefinition formId="Register_Form" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1vrrl2j</bpmn:incoming>
       <bpmn:outgoing>Flow_0w3248l</bpmn:outgoing>
     </bpmn:userTask>
@@ -48,6 +52,10 @@
       <bpmn:sequenceFlow id="Flow_0pizeih" sourceRef="Event_1ov2fwh" targetRef="Activity_1gcheea" />
       <bpmn:sequenceFlow id="Flow_0no6yo2" sourceRef="Activity_1gcheea" targetRef="Activity_0j2npfa" />
       <bpmn:userTask id="Activity_0j2npfa" name="Confirm Email">
+        <bpmn:extensionElements>
+          <zeebe:formDefinition formId="Email" />
+          <zeebe:userTask />
+        </bpmn:extensionElements>
         <bpmn:incoming>Flow_0no6yo2</bpmn:incoming>
         <bpmn:outgoing>Flow_0qdb6mb</bpmn:outgoing>
       </bpmn:userTask>
@@ -61,10 +69,14 @@
         <bpmn:incoming>Flow_0uolr8s</bpmn:incoming>
         <bpmn:outgoing>Flow_1dn272f</bpmn:outgoing>
       </bpmn:task>
-      <bpmn:sequenceFlow id="Flow_0uolr8s" name="Yes" sourceRef="Gateway_10pxc3i" targetRef="Activity_0o7o0z3" />
+      <bpmn:sequenceFlow id="Flow_0uolr8s" name="Yes" sourceRef="Gateway_10pxc3i" targetRef="Activity_0o7o0z3">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=confirmed = true</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
       <bpmn:boundaryEvent id="Event_1fqjmwo" name="After 15 minutes" attachedToRef="Activity_0j2npfa">
         <bpmn:outgoing>Flow_1rap827</bpmn:outgoing>
-        <bpmn:timerEventDefinition id="TimerEventDefinition_1delxga" />
+        <bpmn:timerEventDefinition id="TimerEventDefinition_1delxga">
+          <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT15M</bpmn:timeDuration>
+        </bpmn:timerEventDefinition>
       </bpmn:boundaryEvent>
       <bpmn:sequenceFlow id="Flow_1rap827" sourceRef="Event_1fqjmwo" targetRef="Gateway_061atgj" />
       <bpmn:exclusiveGateway id="Gateway_061atgj">
@@ -73,7 +85,9 @@
         <bpmn:outgoing>Flow_0rn7wh7</bpmn:outgoing>
       </bpmn:exclusiveGateway>
       <bpmn:sequenceFlow id="Flow_0rn7wh7" sourceRef="Gateway_061atgj" targetRef="Activity_03h6ybp" />
-      <bpmn:sequenceFlow id="Flow_1qv9lus" name="No" sourceRef="Gateway_10pxc3i" targetRef="Gateway_061atgj" />
+      <bpmn:sequenceFlow id="Flow_1qv9lus" name="No" sourceRef="Gateway_10pxc3i" targetRef="Gateway_061atgj">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=confirmed != true</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0oxotak" sourceRef="Activity_03h6ybp" targetRef="Event_1cxyug3" />
       <bpmn:sequenceFlow id="Flow_1dn272f" sourceRef="Activity_0o7o0z3" targetRef="Activity_0ro103o" />
       <bpmn:endEvent id="Event_1ni8zg9" name="Verification complated">
@@ -82,7 +96,7 @@
       <bpmn:sequenceFlow id="Flow_1kfzoll" sourceRef="Activity_0ro103o" targetRef="Event_1ni8zg9" />
       <bpmn:endEvent id="Event_1cxyug3" name="Verification failed">
         <bpmn:incoming>Flow_0oxotak</bpmn:incoming>
-        <bpmn:errorEventDefinition id="ErrorEventDefinition_0ljjw84" />
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_0ljjw84" errorRef="Error_1xbovnu" />
       </bpmn:endEvent>
       <bpmn:task id="Activity_0ro103o" name="Display confirmation of email sucessful verification">
         <bpmn:incoming>Flow_1dn272f</bpmn:incoming>
@@ -107,6 +121,7 @@
       <bpmn:outgoing>Flow_1cdes4b</bpmn:outgoing>
     </bpmn:task>
   </bpmn:process>
+  <bpmn:error id="Error_1xbovnu" name="Error_11igion" errorCode="=&#34;Registraiton faild&#34;" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_06pmoe0">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
@@ -135,6 +150,10 @@
       <bpmndi:BPMNShape id="Gateway_1o8b1p3_di" bpmnElement="Gateway_1o8b1p3" isMarkerVisible="true">
         <dc:Bounds x="325" y="93" width="50" height="50" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1iyavdj_di" bpmnElement="Activity_1iyavdj" isExpanded="false">
+        <dc:Bounds x="920" y="78" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0zkhqsk_di" bpmnElement="Event_0zkhqsk">
         <dc:Bounds x="1112" y="260" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -143,10 +162,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_08sor0b_di" bpmnElement="Activity_0asa5qi">
         <dc:Bounds x="650" y="238" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1iyavdj_di" bpmnElement="Activity_1iyavdj" isExpanded="false">
-        <dc:Bounds x="920" y="78" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1gyxkaz_di" bpmnElement="Event_0jvda2f">
         <dc:Bounds x="982" y="140" width="36" height="36" />
@@ -160,13 +175,9 @@
           <dc:Bounds x="626" y="183" width="70" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_146q6u2_di" bpmnElement="Flow_146q6u2">
-        <di:waypoint x="218" y="118" />
-        <di:waypoint x="325" y="118" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1vrrl2j_di" bpmnElement="Flow_1vrrl2j">
-        <di:waypoint x="375" y="118" />
-        <di:waypoint x="440" y="118" />
+      <bpmndi:BPMNEdge id="Flow_17syz2p_di" bpmnElement="Flow_17syz2p">
+        <di:waypoint x="700" y="176" />
+        <di:waypoint x="700" y="238" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0w3248l_di" bpmnElement="Flow_0w3248l">
         <di:waypoint x="540" y="118" />
@@ -180,23 +191,27 @@
         <di:waypoint x="870" y="118" />
         <di:waypoint x="920" y="118" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1t7btm8_di" bpmnElement="Flow_1t7btm8">
-        <di:waypoint x="1020" y="118" />
-        <di:waypoint x="1112" y="118" />
+      <bpmndi:BPMNEdge id="Flow_146q6u2_di" bpmnElement="Flow_146q6u2">
+        <di:waypoint x="218" y="118" />
+        <di:waypoint x="325" y="118" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1cdes4b_di" bpmnElement="Flow_1cdes4b">
         <di:waypoint x="650" y="278" />
         <di:waypoint x="350" y="278" />
         <di:waypoint x="350" y="143" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vrrl2j_di" bpmnElement="Flow_1vrrl2j">
+        <di:waypoint x="375" y="118" />
+        <di:waypoint x="440" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t7btm8_di" bpmnElement="Flow_1t7btm8">
+        <di:waypoint x="1020" y="118" />
+        <di:waypoint x="1112" y="118" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0mlfqjr_di" bpmnElement="Flow_0mlfqjr">
         <di:waypoint x="1000" y="176" />
         <di:waypoint x="1000" y="278" />
         <di:waypoint x="1112" y="278" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_17syz2p_di" bpmnElement="Flow_17syz2p">
-        <di:waypoint x="700" y="176" />
-        <di:waypoint x="700" y="238" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
