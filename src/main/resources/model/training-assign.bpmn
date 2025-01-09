@@ -1,134 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="84d9121" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="addcace" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
   <bpmn:process id="assign-training" name="Training assign" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1" name="Training Assign">
-      <bpmn:outgoing>Flow_15r2a32</bpmn:outgoing>
+    <bpmn:startEvent id="StartEvent_1" name="Form opened">
+      <bpmn:outgoing>Flow_1kc2gxz</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_15r2a32" sourceRef="StartEvent_1" targetRef="Gateway_03igdtl" />
-    <bpmn:serviceTask id="Activity_04qjkax" name="Check available trennings">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="check-avaiablity" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_15uopc1</bpmn:incoming>
-      <bpmn:outgoing>Flow_09z8w3n</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_09z8w3n" sourceRef="Activity_04qjkax" targetRef="Activity_039bh3t" />
-    <bpmn:sequenceFlow id="Flow_041bpv2" sourceRef="Activity_039bh3t" targetRef="Activity_1mjdx6v" />
-    <bpmn:userTask id="Activity_1mjdx6v" name="Choose trening">
+    <bpmn:userTask id="Activity_1mjdx6v" name="Choose training">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:formDefinition formId="Trening_Form" />
+        <zeebe:formDefinition formId="Form_121yyqc" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_041bpv2</bpmn:incoming>
+      <bpmn:incoming>Flow_1kc2gxz</bpmn:incoming>
       <bpmn:outgoing>Flow_1ae9jvf</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1ae9jvf" sourceRef="Activity_1mjdx6v" targetRef="Activity_0uyq1hf" />
-    <bpmn:serviceTask id="Activity_0uyq1hf" name="Register user for trening">
+    <bpmn:serviceTask id="Activity_0uyq1hf" name="Assign user for training">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="registration-for-training" />
+        <zeebe:taskDefinition type="assignTraining" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1ae9jvf</bpmn:incoming>
       <bpmn:outgoing>Flow_1w237p3</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_1jphuhk" name="Registration successful">
+    <bpmn:endEvent id="Event_1jphuhk" name="User assigned">
       <bpmn:incoming>Flow_1w237p3</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1w237p3" sourceRef="Activity_0uyq1hf" targetRef="Event_1jphuhk" />
-    <bpmn:boundaryEvent id="Event_1hcm3y8" name="Registration failed" attachedToRef="Activity_0uyq1hf">
+    <bpmn:boundaryEvent id="Event_1hcm3y8" name="Assigning failed" attachedToRef="Activity_0uyq1hf">
       <bpmn:outgoing>Flow_0gmrs08</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_1i62taw" />
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0gmrs08" sourceRef="Event_1hcm3y8" targetRef="Activity_1vz4cr1" />
-    <bpmn:exclusiveGateway id="Gateway_03igdtl">
-      <bpmn:incoming>Flow_1a8jd2s</bpmn:incoming>
-      <bpmn:incoming>Flow_15r2a32</bpmn:incoming>
-      <bpmn:outgoing>Flow_15uopc1</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1a8jd2s" sourceRef="Activity_1vz4cr1" targetRef="Gateway_03igdtl" />
-    <bpmn:sequenceFlow id="Flow_15uopc1" sourceRef="Gateway_03igdtl" targetRef="Activity_04qjkax" />
-    <bpmn:task id="Activity_039bh3t" name="Display available trenings">
-      <bpmn:incoming>Flow_09z8w3n</bpmn:incoming>
-      <bpmn:outgoing>Flow_041bpv2</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:task id="Activity_1vz4cr1" name="Display fail registration for trening">
+    <bpmn:task id="Activity_1vz4cr1" name="Display assigning failure">
       <bpmn:incoming>Flow_0gmrs08</bpmn:incoming>
-      <bpmn:outgoing>Flow_1a8jd2s</bpmn:outgoing>
+      <bpmn:outgoing>Flow_19ddgje</bpmn:outgoing>
     </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1kc2gxz" sourceRef="StartEvent_1" targetRef="Activity_1mjdx6v" />
+    <bpmn:endEvent id="Event_0hlfd92" name="Assigning failed">
+      <bpmn:incoming>Flow_19ddgje</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_19ddgje" sourceRef="Activity_1vz4cr1" targetRef="Event_0hlfd92" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="assign-training">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="152" y="100" width="36" height="36" />
+        <dc:Bounds x="172" y="100" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="134" y="143" width="74" height="14" />
+          <dc:Bounds x="159" y="143" width="66" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1lj3exx_di" bpmnElement="Activity_04qjkax">
-        <dc:Bounds x="290" y="78" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ggpq1f_di" bpmnElement="Activity_1mjdx6v">
-        <dc:Bounds x="610" y="78" width="100" height="80" />
+        <dc:Bounds x="340" y="78" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0vaxqlj_di" bpmnElement="Activity_0uyq1hf">
-        <dc:Bounds x="770" y="78" width="100" height="80" />
+        <dc:Bounds x="610" y="78" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1jphuhk_di" bpmnElement="Event_1jphuhk">
-        <dc:Bounds x="982" y="100" width="36" height="36" />
+        <dc:Bounds x="822" y="100" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="971" y="143" width="59" height="27" />
+          <dc:Bounds x="805" y="143" width="71" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_03igdtl_di" bpmnElement="Gateway_03igdtl" isMarkerVisible="true">
-        <dc:Bounds x="215" y="93" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1214alw_di" bpmnElement="Activity_039bh3t">
-        <dc:Bounds x="450" y="78" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1e6wqbc_di" bpmnElement="Activity_1vz4cr1">
-        <dc:Bounds x="770" y="250" width="100" height="80" />
+        <dc:Bounds x="610" y="250" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1hcm3y8_di" bpmnElement="Event_1hcm3y8">
-        <dc:Bounds x="802" y="140" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_0hlfd92_di" bpmnElement="Event_0hlfd92">
+        <dc:Bounds x="822" y="272" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="725" y="183" width="89" height="14" />
+          <dc:Bounds x="801" y="315" width="78" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_15r2a32_di" bpmnElement="Flow_15r2a32">
-        <di:waypoint x="188" y="118" />
-        <di:waypoint x="215" y="118" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_09z8w3n_di" bpmnElement="Flow_09z8w3n">
-        <di:waypoint x="390" y="118" />
-        <di:waypoint x="450" y="118" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_041bpv2_di" bpmnElement="Flow_041bpv2">
-        <di:waypoint x="550" y="118" />
+      <bpmndi:BPMNShape id="Event_1hcm3y8_di" bpmnElement="Event_1hcm3y8">
+        <dc:Bounds x="642" y="140" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="571" y="183" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1ae9jvf_di" bpmnElement="Flow_1ae9jvf">
+        <di:waypoint x="440" y="118" />
         <di:waypoint x="610" y="118" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ae9jvf_di" bpmnElement="Flow_1ae9jvf">
-        <di:waypoint x="710" y="118" />
-        <di:waypoint x="770" y="118" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1w237p3_di" bpmnElement="Flow_1w237p3">
-        <di:waypoint x="870" y="118" />
-        <di:waypoint x="982" y="118" />
+        <di:waypoint x="710" y="118" />
+        <di:waypoint x="822" y="118" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0gmrs08_di" bpmnElement="Flow_0gmrs08">
-        <di:waypoint x="820" y="176" />
-        <di:waypoint x="820" y="250" />
+        <di:waypoint x="660" y="176" />
+        <di:waypoint x="660" y="250" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1a8jd2s_di" bpmnElement="Flow_1a8jd2s">
-        <di:waypoint x="770" y="290" />
-        <di:waypoint x="240" y="290" />
-        <di:waypoint x="240" y="143" />
+      <bpmndi:BPMNEdge id="Flow_1kc2gxz_di" bpmnElement="Flow_1kc2gxz">
+        <di:waypoint x="208" y="118" />
+        <di:waypoint x="340" y="118" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15uopc1_di" bpmnElement="Flow_15uopc1">
-        <di:waypoint x="265" y="118" />
-        <di:waypoint x="290" y="118" />
+      <bpmndi:BPMNEdge id="Flow_19ddgje_di" bpmnElement="Flow_19ddgje">
+        <di:waypoint x="710" y="290" />
+        <di:waypoint x="822" y="290" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

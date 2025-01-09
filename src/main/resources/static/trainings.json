@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "title": "Beginner Yoga",
+    "description": "A relaxing yoga session focused on stretching and mindfulness.",
+    "duration": "45 minutes",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 2,
+    "title": "HIIT Workout",
+    "description": "High-intensity interval training to boost your cardio and strength.",
+    "duration": "30 minutes",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 3,
+    "title": "Strength Training Basics",
+    "description": "Learn the fundamentals of weightlifting and strength exercises.",
+    "duration": "60 minutes",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 4,
+    "title": "Advanced Pilates",
+    "description": "A challenging Pilates session for core strength and flexibility.",
+    "duration": "50 minutes",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 5,
+    "title": "Running Techniques",
+    "description": "Improve your running form and endurance with expert tips.",
+    "duration": "1 hour",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 6,
+    "title": "Full-Body Stretching",
+    "description": "A guided stretching session to enhance mobility and prevent injuries.",
+    "duration": "30 minutes",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 7,
+    "title": "CrossFit Training",
+    "description": "High-intensity functional fitness workouts for strength and endurance.",
+    "duration": "45 minutes",
+    "difficulty": "Advanced"
+  },
+  {
+    "id": 8,
+    "title": "Zumba Dance Fitness",
+    "description": "A fun and energetic dance workout to burn calories.",
+    "duration": "40 minutes",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 9,
+    "title": "Boxing Basics",
+    "description": "Learn the fundamentals of boxing, including punches and footwork.",
+    "duration": "1 hour",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 10,
+    "title": "Functional Training Circuit",
+    "description": "A circuit workout to improve functional strength and agility.",
+    "duration": "50 minutes",
+    "difficulty": "Advanced"
+  }
+]

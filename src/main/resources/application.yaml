@@ -6,4 +6,15 @@ zeebe:
       clientSecret: ytRc~wagr_rN5GTxS7Bh-renBOf3JfXdmmLOeoLNF9JjunDkmRQCA9Ef0C0Fop2t
       region: lhr-1
 
+spring:
+  datasource:
+    url: jdbc:h2:mem:~/bpmndb
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+
 
