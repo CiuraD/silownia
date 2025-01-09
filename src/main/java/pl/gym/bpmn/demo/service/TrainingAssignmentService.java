@@ -2,11 +2,9 @@ package pl.gym.bpmn.demo.service;
 
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -40,11 +38,11 @@ public class TrainingAssignmentService {
 
     LOGGER.info("Started process 'assignTraining' {}", job);
 
-    Long id = Long.parseLong(jobVariables.get("gymUserId").toString());
+    String email = jobVariables.get("email").toString();
 
     GymUser gymUser =
         gymUserRepository
-            .findById(id)
+            .findByEmail(email)
             .orElseThrow(() -> new IllegalArgumentException("No user found"));
 
     if (jobVariables.get("trainingsList") != null) {
