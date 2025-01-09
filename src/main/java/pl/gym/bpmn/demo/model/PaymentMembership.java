@@ -5,35 +5,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class GymUser {
+public class PaymentMembership {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "name")
-  private String name;
+  @Column(name = "amount")
+  private Double amount;
 
-  @Column(name = "surname")
-  private String surname;
+  @OneToOne
+  @JoinColumn(name = "gym_user_id")
+  private GymUser gymUser;
 
-  @Column(name = "email", unique = true)
-  private String email;
-
-  @Column(name = "age")
-  private Integer age;
-
-  public GymUser(String name, String surname, String email, Integer age) {
-    this.name = name;
-    this.surname = surname;
-    this.email = email;
-    this.age = age;
+  public PaymentMembership(Double amount, GymUser gymUser) {
+    this.amount = amount;
+    this.gymUser = gymUser;
   }
 }

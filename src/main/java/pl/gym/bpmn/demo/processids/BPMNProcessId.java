@@ -1,7 +1,11 @@
 package pl.gym.bpmn.demo.processids;
 
+import lombok.Getter;
+
+@Getter
 public enum BPMNProcessId {
-  ASSIGN_TRAINING("assign-training");
+  ASSIGN_TRAINING("assign-training"),
+  PAYMENT_MEMBERSHIP("payment-membership");
 
   private final String processId;
 
@@ -9,7 +13,4 @@ public enum BPMNProcessId {
     this.processId = processId;
   }
 
-  public String getProcessId() {
-    return processId;
-  }
 }
