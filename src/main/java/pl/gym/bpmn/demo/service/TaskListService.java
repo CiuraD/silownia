@@ -55,6 +55,8 @@ public class TaskListService {
                 .build();
       }
     }
+
+    LOG.info("Created");
     return client;
   }
 

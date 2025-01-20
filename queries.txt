@@ -1,3 +1,3 @@
 << get users related with trainings >>
-SELECT * FROM gym_user gu JOIN training_assignment ta ON ta.gym_user_id = gu.id JOIN training t ON t.id = ta.training_assignment;
+SELECT * FROM gym_user gu JOIN training_assignment ta ON ta.gym_user_id = gu.id JOIN training t ON t.id = ta.training_id;
 
